@@ -309,7 +309,16 @@ pam.serviceName=<%= @pam['serviceName'] %>
 #-------------------
 # IMPORTANT : before activation, make sure that one Sonar administrator is defined in the external system
 # Activates the plugin. Leave blank or comment out to use default sonar authentication.
+<%
+# if version 4 or less, use sonar.authenticator.class
+if @version.split('.')[0].to_i < 5
+%>
 sonar.authenticator.class: org.sonar.plugins.crowd.CrowdAuthenticator
+<%
+# if version 5+ use sonar.security.realm 
+else %>
+sonar.security.realm: Crowd
+<% end %>
 
 # Ignore failure at startup if the connection to external system is refused.
 # Users can browse sonar but not log in as long as the connection fails.
